@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useMediaQuery } from 'react-responsive'; // For detecting screen size
 import ProgressBar from './questionnaire/ProgressBar';
 import SizeQuestion from './questionnaire/SizeQuestion';
 import CategoryQuestion from './questionnaire/CategoryQuestion';
@@ -50,7 +51,6 @@ const imagePaths = {
 
 function Questionnaire() {
   const navigate = useNavigate();
-  const [isMobile, setIsMobile] = useState(false);
   const [step, setStep] = useState(1);
   const [size, setSize] = useState('Petite'); // Default size
   const [categorySelections, setCategorySelections] = useState({});
@@ -60,50 +60,36 @@ function Questionnaire() {
   const [progress, setProgress] = useState(25); // Tracks progress
   const [error, setError] = useState(''); // Error message for style selection
 
+  // Detect if the screen size is mobile
+  const isMobile = useMediaQuery({ query: '(max-width: 1025px)' });
+
   const categories = ['brasAndPanties', 'garters', 'babydolls', 'bodysuits', 'teddys', 'panties', 'bodyStockings', 'pantyhose'];
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
-    handleResize(); // Initial check
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   useEffect(() => {
     // Calculate progress percentage based on the current step
     setProgress((step / 4) * 100); // 4 is the total number of steps
   }, [step]);
-  
+
   const renderProgress = () => (
     <div className="w-full bg-gray-200 h-2">
       <div className="bg-pink-500 h-2" style={{ width: `${progress}%` }}></div>
     </div>
   );
-  
+
+  // Handle Category Selection
+  const handleCategoryChange = (category) => {
+    setSelectedCategories((prev) => {
+      if (prev.includes(category)) {
+        return prev.filter((item) => item !== category);
+      } else {
+        return [...prev, category];
+      }
+    });
+  };
 
   // Handle Size Selection
   const handleSizeChange = (newSize) => {
     setSize(newSize);
-  };
-
-  // Handle Category Selection
-  const handleCategoryAnswer = (answer) => {
-    const currentCategory = categories[categoryIndex];
-    setCategorySelections((prev) => ({
-      ...prev,
-      [currentCategory]: answer,
-    }));
-
-    // Move to the next category
-    if (categoryIndex < categories.length - 1) {
-      setCategoryIndex(categoryIndex + 1);
-    } else {
-      // Move to the next step once all categories have been answered
-      setStep(step + 1);
-    }
   };
 
   // Handle Style Selection
@@ -169,8 +155,6 @@ function Questionnaire() {
     // If both types exist, return the image for the selected size type
     return imagePaths.categories[category][sizeType];
   };
-  
-
 
   // Render Questionnaire
   const renderQuestionnaire = () => {
@@ -178,9 +162,15 @@ function Questionnaire() {
       case 1:
         return <SizeQuestion size={size} handleSizeChange={handleSizeChange} imagePaths={imagePaths} />;
       case 2:
-        return isMobile
-          ? <CategoryQuestion category={categories[categoryIndex]} handleCategoryAnswer={handleCategoryAnswer} getCategoryImage={getCategoryImage} />
-          : <CategoryQuestion category={categories[categoryIndex]} handleCategoryAnswer={handleCategoryAnswer} getCategoryImage={getCategoryImage} />;
+        return (
+          <CategoryQuestion
+            selectedCategories={selectedCategories}
+            handleCategoryChange={handleCategoryChange}
+            imagePaths={imagePaths}
+            nextStep={nextStep}
+            isMobile={isMobile} // Pass isMobile to CategoryQuestion
+          />
+        );
       case 3:
         return <StyleQuestion selectedStyles={selectedStyles} handleStyleSelection={handleStyleSelection} getCategoryImage={getCategoryImage} error={error} />;
       case 4:
@@ -203,7 +193,7 @@ function Questionnaire() {
         </div>
   
         {/* Navigation Buttons */}
-        <div className="mt-8 w-full flex flex-col lg:flex-row lg:justify-end items-center"> {/* Changed md to lg for consistent transition */}
+        <div className="mt-8 w-full flex flex-col lg:flex-row lg:justify-end items-center">
           {step > 1 && (
             <button
               className="bg-gray-500 text-white py-3 px-8 rounded-lg w-3/4 lg:w-auto text-center mb-4 lg:mb-0"
@@ -231,13 +221,6 @@ function Questionnaire() {
       </div>
     </div>
   );
-  
-  
-  
-  
-  
-  
-  
 }
 
 export default Questionnaire;
