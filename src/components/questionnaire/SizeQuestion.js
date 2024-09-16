@@ -8,7 +8,7 @@ const SizeQuestion = ({ size, handleSizeChange, imagePaths }) => {
   return (
     <div className="flex flex-col items-center justify-center w-full">
       {/* Centered Header */}
-      <h2 className="text-4xl font-bold mb-8 text-center">Choose Your Size</h2>
+      <h2 className="text-4xl font-bold mb-8 text-center">Embrace Your Curves, Pick Your Size</h2>
 
       {/* Mobile/Tablet Version - 2 columns */}
       {isMobileOrTablet ? (

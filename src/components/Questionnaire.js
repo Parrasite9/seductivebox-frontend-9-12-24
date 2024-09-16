@@ -227,41 +227,42 @@ function Questionnaire() {
         </div>
       ) : (
         // Desktop Version
-        <div className="mt-8 w-full flex flex-col lg:flex-row lg:justify-end items-center">
-          {step > 1 && (
-            <button
-              className="bg-gray-500 text-white py-3 px-8 rounded-lg w-3/4 lg:w-auto text-center mb-4 lg:mb-0"
-              onClick={prevStep}
-            >
-              Previous
-            </button>
-          )}
-          {step === 2 ? (
-            <button
-              className={`bg-pink-500 text-white py-3 px-8 rounded-lg w-3/4 lg:w-auto text-center ${
-                selectedCategories.length >= 3 ? 'opacity-100' : 'opacity-50 cursor-not-allowed'
-              }`}
-              disabled={selectedCategories.length < 3}
-              onClick={nextStep}
-            >
-              Next
-            </button>
-          ) : step < 4 ? (
-            <button
-              className="bg-pink-500 text-white py-3 px-8 rounded-lg w-3/4 lg:w-auto text-center"
-              onClick={nextStep}
-            >
-              Next
-            </button>
-          ) : (
-            <button
-              className="bg-green-500 text-white py-3 px-8 rounded-lg w-3/4 lg:w-auto text-center"
-              onClick={handleSubmit}
-            >
-              Submit
-            </button>
-          )}
-        </div>
+<div className="mt-8 w-full flex flex-col lg:flex-row lg:justify-between items-center">
+  {step > 1 && (
+    <button
+      className="bg-gray-500 text-white py-3 px-8 rounded-lg w-1/3 lg:w-auto text-center mb-4 lg:mb-0"
+      onClick={prevStep}
+    >
+      Previous
+    </button>
+  )}
+  {step === 2 ? (
+    <button
+      className={`bg-pink-500 text-white py-3 px-8 rounded-lg w-1/3 lg:w-auto text-center ${
+        selectedCategories.length >= 3 ? 'opacity-100' : 'opacity-50 cursor-not-allowed'
+      }`}
+      disabled={selectedCategories.length < 3} // Disable the button if less than 3 categories are selected
+      onClick={nextStep}
+    >
+      Next
+    </button>
+  ) : step < 4 ? (
+    <button
+      className="bg-pink-500 text-white py-3 px-8 rounded-lg w-1/3 lg:w-auto text-center"
+      onClick={nextStep}
+    >
+      Next
+    </button>
+  ) : (
+    <button
+      className="bg-green-500 text-white py-3 px-8 rounded-lg w-1/3 lg:w-auto text-center"
+      onClick={handleSubmit}
+    >
+      Submit
+    </button>
+  )}
+</div>
+
       )}
 
 

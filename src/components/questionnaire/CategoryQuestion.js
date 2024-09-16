@@ -38,7 +38,7 @@ const CategoriesQuestion = ({ selectedCategories = [], handleCategoryChange, ima
   return (
     <div className="flex flex-col items-center justify-center w-full">
       {/* Centered Header */}
-      <h2 className="text-4xl font-bold mb-8 text-center">Select Your Favorite Categories</h2>
+      <h2 className="text-4xl font-bold mb-8 text-center">Explore Styles to Love Every Inch of You</h2>
 
       {/* Ternary for mobile and desktop */}
       {isMobile ? (
