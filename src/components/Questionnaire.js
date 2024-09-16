@@ -80,12 +80,13 @@ function Questionnaire() {
   const handleCategoryChange = (category) => {
     setSelectedCategories((prev) => {
       if (prev.includes(category)) {
-        return prev.filter((item) => item !== category);
+        return prev.filter((item) => item !== category); // Remove category
       } else {
-        return [...prev, category];
+        return [...prev, category]; // Add category
       }
     });
   };
+  
 
   // Handle Size Selection
   const handleSizeChange = (newSize) => {
@@ -167,8 +168,11 @@ function Questionnaire() {
             selectedCategories={selectedCategories}
             handleCategoryChange={handleCategoryChange}
             imagePaths={imagePaths}
-            nextStep={nextStep}
             isMobile={isMobile} // Pass isMobile to CategoryQuestion
+            nextStep={nextStep}
+            prevStep={prevStep}
+            step={step}
+            size={size}
           />
         );
       case 3:
@@ -193,6 +197,9 @@ function Questionnaire() {
         </div>
   
         {/* Navigation Buttons */}
+
+      {isMobile ? (
+        // Mobile Version
         <div className="mt-8 w-full flex flex-col lg:flex-row lg:justify-end items-center">
           {step > 1 && (
             <button
@@ -218,6 +225,47 @@ function Questionnaire() {
             </button>
           )}
         </div>
+      ) : (
+        // Desktop Version
+        <div className="mt-8 w-full flex flex-col lg:flex-row lg:justify-end items-center">
+          {step > 1 && (
+            <button
+              className="bg-gray-500 text-white py-3 px-8 rounded-lg w-3/4 lg:w-auto text-center mb-4 lg:mb-0"
+              onClick={prevStep}
+            >
+              Previous
+            </button>
+          )}
+          {step === 2 ? (
+            <button
+              className={`bg-pink-500 text-white py-3 px-8 rounded-lg w-3/4 lg:w-auto text-center ${
+                selectedCategories.length >= 3 ? 'opacity-100' : 'opacity-50 cursor-not-allowed'
+              }`}
+              disabled={selectedCategories.length < 3}
+              onClick={nextStep}
+            >
+              Next
+            </button>
+          ) : step < 4 ? (
+            <button
+              className="bg-pink-500 text-white py-3 px-8 rounded-lg w-3/4 lg:w-auto text-center"
+              onClick={nextStep}
+            >
+              Next
+            </button>
+          ) : (
+            <button
+              className="bg-green-500 text-white py-3 px-8 rounded-lg w-3/4 lg:w-auto text-center"
+              onClick={handleSubmit}
+            >
+              Submit
+            </button>
+          )}
+        </div>
+      )}
+
+
+
       </div>
     </div>
   );

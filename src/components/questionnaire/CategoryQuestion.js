@@ -1,7 +1,7 @@
 import React from 'react';
 import { useMediaQuery } from 'react-responsive';
 
-const CategoriesQuestion = ({ selectedCategories = [], handleCategoryChange, imagePaths, nextStep, size }) => {
+const CategoriesQuestion = ({ selectedCategories = [], handleCategoryChange, imagePaths,   nextStep={nextStep}, prevStep={prevStep}, step={step}, size={size}  }) => {
   // Define categories and ensure they match the structure in imagePaths
   const categories = [
     'brasAndPanties',
@@ -111,6 +111,8 @@ const CategoriesQuestion = ({ selectedCategories = [], handleCategoryChange, ima
                     <p className="text-gray-500 text-center">Select a category to preview.</p>
                 )}
             </div>
+            
+
         </div>
       )}
     </div>
